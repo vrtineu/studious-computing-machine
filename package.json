@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-api",
+  "version": "1.0.0",
+  "description": "API com nodejs e mongodb",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Vinicius",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.1.0",
+    "nodemon": "^2.0.15"
+  }
+}
