@@ -1,11 +1,23 @@
 const customExpress = require("./config/customExpress");
+const dotenv = require("dotenv").config();
+const mongoose = require("mongoose");
 
-const app = customExpress();
+(async () => {
+	const { MONGO_URL, PORT } = process.env;
 
-app.get("/", (req, res) => {
-	res.send("Hello World");
-});
+	const options = { useNewUrlParser: true, useUnifiedTopology: true };
+	mongoose
+		.connect(MONGO_URL, options)
+		.then(() => console.log("Connected to MongoDB"))
+		.catch((err) => console.log(err));
+	mongoose.connection.on(
+		"error",
+		console.error.bind(console, "MongoDB connection error:")
+	);
 
-app.listen(3000, () => {
-	console.log("Servidor rodando na porta 3000");
-});
+	const app = customExpress();
+
+	app.listen(PORT, () => {
+		console.log(`Server running on port ${PORT}`);
+	});
+})();
