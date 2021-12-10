@@ -1,45 +1,23 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const autoIncrement = require("mongoose-auto-increment");
+import connect from "../database/connect.js";
+import dotenv from "dotenv";
 
-const ServiceSchema = new Schema({
-	id: {
-		type: Number,
-		required: true,
-		unique: true,
-	},
-	clientName: {
-		type: String,
-		required: true,
-	},
-	petName: {
-		type: String,
-		required: true,
-	},
-	serviceType: {
-		type: String,
-		required: true,
-	},
-	status: {
-		type: String,
-		required: true,
-	},
-	anotation: {
-		type: String,
-		required: true,
-	},
-	date: {
-		type: Date,
-		required: true,
-	},
-	dateOfCreation: {
-		type: Date,
-		default: Date.now,
-	},
-});
+dotenv.config();
+const { MONGO_URL } = process.env;
+class ServicePet {
+	list(res) {
+		connect(MONGO_URL);
+		const collection = connect.db.collection("services");
+		collection.find({}).toArray((err, result) => {
+			if (err) {
+				res.status(500).json({
+					message: "Error getting services",
+					error: err,
+				});
+			} else {
+				res.status(200).json(result);
+			}
+		});
+	}
+}
 
-ServiceSchema.plugin(autoIncrement.plugin, { inc_field: "id" });
-
-const Service = mongoose.model("service", ServiceSchema);
-
-export default Service;
+export default new ServicePet();
