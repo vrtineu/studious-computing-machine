@@ -1,10 +1,10 @@
-const express = require("express");
+import express from "express";
 
-module.exports = () => {
-    const app = express();
-    
+export default () => {
+	const app = express();
+
 	app.use(express.json());
-	app.use(express.urlencoded({ extended: false }));
+	app.use(express.urlencoded({ extended: true }));
 
 	return app;
 };
