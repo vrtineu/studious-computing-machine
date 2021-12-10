@@ -1,8 +1,8 @@
-import ServicePet from "../model/service.js";
+import servicesRouter from "./services.js";
+import { Router } from "express";
 
-export default (app) => {
-	app.get("/services", (req, res) => {
-		// ServicePet.list(res);
-        res.send("Hello World");
-	});
-};
+const router = Router();
+
+router.use("/services", servicesRouter);
+
+export default router;
