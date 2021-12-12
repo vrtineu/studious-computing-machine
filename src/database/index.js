@@ -14,5 +14,5 @@ export default (db) => {
 	};
 	connect();
 
-	mongoose.connection.on("disconnected", connect);
+	// mongoose.connection.on("disconnected", connect);
 };
