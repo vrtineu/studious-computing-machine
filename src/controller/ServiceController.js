@@ -18,7 +18,9 @@ export default class ServiceController {
 
 			res.status(200).json(result);
 		} catch (error) {
-			res.status(500).json({ error: error.message });
+			res
+				.status(500)
+				.json({ message: "Internal server error", error: error.message });
 		}
 	}
 
@@ -28,13 +30,12 @@ export default class ServiceController {
 
 			const service = await Service.find({});
 			connection.close();
-			
+
 			res.status(200).json(...service);
 		} catch (error) {
-			return res.status(500).json({
-				message: "Internal server error",
-				error: error.message,
-			});
+			res
+				.status(500)
+				.json({ message: "Internal server error", error: error.message });
 		}
 	}
 
@@ -42,15 +43,51 @@ export default class ServiceController {
 		try {
 			connect(MONGO_URL);
 
-			const service = await Service.find({ id: req.params.id });
+			const service = await Service.findOne({ id: req.params.id });
 			connection.close();
 
 			res.status(200).json(...service);
 		} catch (error) {
-			return res.status(500).json({
-				message: "Internal server error",
-				error: error.message,
-			});
+			res
+				.status(500)
+				.json({ message: "Internal server error", error: error.message });
+		}
+	}
+
+	async updateService(req, res) {
+		try {
+			connect(MONGO_URL);
+
+			const service = await Service.findOneAndUpdate(
+				{ id: req.params.id },
+				{ ...req.body },
+				{ rawResult: true }
+			);
+			connection.close();
+
+			res.status(200).json(service.value);
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: "Internal server error", error: error.message });
+		}
+	}
+
+	async deleteService(req, res) {
+		try {
+			connect(MONGO_URL);
+
+			const service = await Service.findOneAndDelete(
+				{ id: req.params.id },
+				{ rawResult: true }
+			);
+			connection.close();
+
+			res.status(200).json(service.value);
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: "Internal server error", error: error.message });
 		}
 	}
 }
