@@ -10,6 +10,18 @@ const { connection } = mongoose;
 export default class ServiceController {
 	async createService(req, res) {
 		try {
+			const date = new Date(req.body.date);
+			if (date < new Date())
+				return res.status(400).json({
+					message: "Date must be greater than the date of creation",
+				});
+
+			const clientName = req.body.clientName;
+			if (clientName.length < 5)
+				return res.status(400).json({
+					message: "Client name must be at least 5 characters long",
+				});
+
 			connect(MONGO_URL);
 
 			const service = new Service({ ...req.body });
@@ -55,6 +67,25 @@ export default class ServiceController {
 	}
 
 	async updateService(req, res) {
+		try {
+			connect(MONGO_URL);
+
+			const service = await Service.findOneAndUpdate(
+				{ id: req.params.id },
+				{ ...req.body },
+				{ rawResult: true }
+			);
+			connection.close();
+
+			res.status(200).json(service.value);
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: "Internal server error", error: error.message });
+		}
+	}
+
+	async updateFieldOfService(req, res) {
 		try {
 			connect(MONGO_URL);
 
