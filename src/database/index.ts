@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 
-export default (db) => {
+export default (db: string) => {
+    const options = { useNewUrlParser: true, useUnifiedTopology: true };
 	const connect = () => {
 		mongoose
-			.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+			.connect(db, options as ConnectOptions)
 			.then(() => {
 				console.log("Database connection successful");
 			})
@@ -13,6 +14,4 @@ export default (db) => {
 			});
 	};
 	connect();
-
-	// mongoose.connection.on("disconnected", connect);
 };

@@ -1,8 +1,9 @@
 import express from "express";
-import router from "./routes/index.js";
+import router from "./routes/index";
 import dotenv from "dotenv";
+import path from "path";
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, "..") });
 const { PORT } = process.env;
 
 const app = express();

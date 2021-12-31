@@ -1,4 +1,4 @@
-import servicesRouter from "./services.js";
+import servicesRouter from "./services";
 import { Router } from "express";
 
 const router = Router();

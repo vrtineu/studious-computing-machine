@@ -1,26 +1,33 @@
-import connect from "../database/index.js";
+import connect from "../database/index";
 import mongoose from "mongoose";
-import Service from "../model/ServiceSchema.js";
+import { Request, Response } from "express";
+import Service from "../models/ServiceSchema";
 import dotenv from "dotenv";
 
 dotenv.config();
-const { MONGO_URL } = process.env;
+const MONGO_URL: string = process.env.MONGO_URL!;
 const { connection } = mongoose;
 
 export default class ServiceController {
-	async createService(req, res) {
+	async createService(req: Request, res: Response) {
 		try {
 			const date = new Date(req.body.date);
-			if (date < new Date())
-				return res.status(400).json({
+			if (date < new Date()) {
+				res.status(400).json({
 					message: "Date must be greater than the date of creation",
 				});
+				return;
+			}
+				
 
 			const clientName = req.body.clientName;
-			if (clientName.length < 5)
-				return res.status(400).json({
+			if (clientName.length < 5) {
+				res.status(400).json({
 					message: "Client name must be at least 5 characters long",
 				});
+				return;
+			}
+				
 
 			connect(MONGO_URL);
 
@@ -36,7 +43,7 @@ export default class ServiceController {
 		}
 	}
 
-	async findServices(req, res) {
+	async findServices(req: Request, res: Response) {
 		try {
 			connect(MONGO_URL);
 
@@ -51,7 +58,7 @@ export default class ServiceController {
 		}
 	}
 
-	async findServiceById(req, res) {
+	async findServiceById(req: Request, res: Response) {
 		try {
 			connect(MONGO_URL);
 
@@ -66,7 +73,7 @@ export default class ServiceController {
 		}
 	}
 
-	async updateService(req, res) {
+	async updateService(req: Request, res: Response) {
 		try {
 			connect(MONGO_URL);
 
@@ -85,7 +92,7 @@ export default class ServiceController {
 		}
 	}
 
-	async updateFieldOfService(req, res) {
+	async updateFieldOfService(req: Request, res: Response) {
 		try {
 			connect(MONGO_URL);
 
@@ -104,7 +111,7 @@ export default class ServiceController {
 		}
 	}
 
-	async deleteService(req, res) {
+	async deleteService(req: Request, res: Response) {
 		try {
 			connect(MONGO_URL);
 

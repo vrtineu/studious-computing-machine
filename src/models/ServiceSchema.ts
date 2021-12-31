@@ -1,13 +1,9 @@
-import mongoose from "mongoose";
-import AutoIncrementFactory from "mongoose-sequence";
-
-const AutoIncrement = AutoIncrementFactory(mongoose);
-const { Schema } = mongoose;
+import mongoose, { Schema } from "mongoose";
+const autoIncrement = require("mongoose-sequence")(mongoose);
 
 const serviceSchema = new Schema({
 	id: {
 		type: Number,
-		required: false,
 		unique: true,
 	},
 	clientName: {
@@ -40,7 +36,7 @@ const serviceSchema = new Schema({
 	},
 });
 
-serviceSchema.plugin(AutoIncrement, { inc_field: "id" });
+serviceSchema.plugin(autoIncrement, { inc_field: "id" });
 
 const Service = mongoose.model("service", serviceSchema);
 

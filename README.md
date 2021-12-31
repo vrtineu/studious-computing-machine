@@ -1,1 +1,0 @@
-# studious-computing-machine
